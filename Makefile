@@ -1,37 +1,44 @@
-OBJECT = main
-LIB = projectlib
-
-LIBFILEPATH = libs
 OUTPUTSPATH = build
+MAIN_FILENAME = main
+HEXFILE = tractor.ihx
 
-LIBFILE = $(LIBFILEPATH)/$(LIB).lib
-HEXFILE = $(OUTPUTSPATH)/$(OBJECT).ihx
-SRCFILE = $(OBJECT).c
+SOURCES = \
+$(MAIN_FILENAME).c \
+config.c \
+stm8s_gpio.c
+
+RELS = $(addprefix $(OUTPUTSPATH)/,$(SOURCES:.c=.rel))
 
 SDCC = sdcc
 MACROS = -D__CSMC__ -DSTM8S003
 PROCTYPE = -lstm8 -mstm8
+CFLAGSLIB = -c
 PROCESSOR = stm8s003f3
 DEBUGPROBE = stlinkv2
 FLASH = stm8flash
 
 INCLUDES = \
--I$(LIBFILEPATH) \
--I../STM8S_StdPeriph_Lib/Libraries/STM8S_StdPeriph_Driver/inc/
+-Ilibs/ \
+-Ilibs/StdPeriph_Driver/inc/
 
-all: $(OUTPUTSPATH) $(LIBFILE) $(SRCFILE)
-	$(SDCC) $(MACROS) $(PROCTYPE) $(INCLUDES) $(SRCFILE) $(LIBFILE) -o $(OUTPUTSPATH)/
+vpath %.c libs/
+vpath %.c libs/StdPeriph_Driver/src/
 
-$(LIBFILE):
-	make --no-print-directory -C $(LIBFILEPATH)
+all: $(OUTPUTSPATH) $(HEXFILE)
+
+$(HEXFILE): $(RELS)
+	$(SDCC) $(MACROS) $(PROCTYPE) $(INCLUDES) $(RELS) -o $(OUTPUTSPATH)/
+	-mv $(OUTPUTSPATH)/$(MAIN_FILENAME).ihx $(HEXFILE)
+
+$(OUTPUTSPATH)/%.rel: %.c
+	$(SDCC) $(MACROS) $(PROCTYPE) $(INCLUDES) $(CFLAGSLIB) $< -o $(OUTPUTSPATH)/
 
 $(OUTPUTSPATH):
 	mkdir $@
 
 .PHONY: clean flash
 clean:
-	-rm -fR $(OUTPUTSPATH)
-	make clean --no-print-directory -C $(LIBFILEPATH)
+	-rm -fR $(OUTPUTSPATH) $(HEXFILE)
 
-flash: $(HEXFILE)
+flash:
 	$(FLASH) -c$(DEBUGPROBE) -p$(PROCESSOR) -w $(HEXFILE)

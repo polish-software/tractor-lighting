@@ -1,3 +1,2 @@
-build/
-libs/projectlib.lib
+/build/
 /.vscode/

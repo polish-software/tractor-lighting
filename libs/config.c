@@ -11,6 +11,7 @@
 #include "definitions.h"
 #include "stm8s.h"
 #include "stm8s_gpio.h"
+#include "stm8s_clk.h"
 
 
 static void initializePinsForI2C(void);
