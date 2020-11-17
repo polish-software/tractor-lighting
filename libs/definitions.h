@@ -7,6 +7,9 @@
   ******************************************************************************
 **/
 
+#ifndef __DEFINITIONS_H__
+#define __DEFINITIONS_H__
+
 /* Debug LEDs */
 #define DBG_LED0_PIN                   (GPIO_PIN_3)
 #define DBG_LED0_PORT                  (GPIOA)
@@ -15,6 +18,16 @@
 #define DBG_LED1_PORT                  (GPIOC)
 
 
+/* I2C pins */
+#define I2C_SDA_PIN                    (GPIO_PIN_5)
+#define I2C_SDA_PORT                   (GPIOB)
+
+#define I2C_SCL_PIN                    (GPIO_PIN_4)
+#define I2C_SCL_PORT                   (GPIOB)
+
+
 /* LEDs driver enable pin */
 #define LEDS_ENABLE_PIN                (GPIO_PIN_7)
 #define LEDS_ENABLE_PORT               (GPIOC)
+
+#endif /* __DEFINITIONS_H__ */

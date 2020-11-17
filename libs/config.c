@@ -15,6 +15,8 @@
 
 
 static void initializePinsForI2C(void);
+static void initializePinsForDebugLeds(void);
+static void initializePinForLedsDriver(void);
 
 
 void initializeClocks(void)
@@ -29,5 +31,37 @@ void initializeClocks(void)
 
 void initializePins(void)
 {
+  initializePinsForI2C();
+  initializePinsForDebugLeds();
+  initializePinForLedsDriver();
+}
 
+
+static void initializePinsForI2C(void)
+{
+  /* set GPIOs in output mode */
+  I2C_SDA_PORT->DDR |= I2C_SDA_PIN;
+  I2C_SCL_PORT->DDR |= I2C_SCL_PIN;
+}
+
+
+static void initializePinsForDebugLeds(void)
+{
+  /* set GPIOs high state */
+  DBG_LED0_PORT->ODR |= DBG_LED0_PIN;
+  DBG_LED1_PORT->ODR |= DBG_LED1_PIN;
+
+  /* set GPIOs in output mode */
+  DBG_LED0_PORT->DDR |= DBG_LED0_PIN;
+  DBG_LED1_PORT->DDR |= DBG_LED1_PIN;
+}
+
+
+static void initializePinForLedsDriver(void)
+{
+  /* set GPIO high state */
+  LEDS_ENABLE_PORT->ODR |= LEDS_ENABLE_PIN;
+
+  /* set GPIO in output mode */
+  LEDS_ENABLE_PORT->DDR |= LEDS_ENABLE_PIN;
 }
