@@ -25,43 +25,25 @@ void initializeClocks(void)
   /* HSI prescaler = 4 (HSIDIV[1:0] = 0b10) */
   /* fMASTER = 4 MHz (for peripherals) */
   /* fCPU = fMASTER = 4 MHz (CPUDIV[2:0] = 0b000) */
-  CLK->CKDIVR = CLK_PRESCALER_HSIDIV4 | CLK_PRESCALER_CPUDIV1;
+  CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV4);
 }
 
 
 void initializePins(void)
 {
-  initializePinsForI2C();
   initializePinsForDebugLeds();
   initializePinForLedsDriver();
 }
 
 
-static void initializePinsForI2C(void)
-{
-  /* set GPIOs in output mode */
-  I2C_SDA_PORT->DDR |= I2C_SDA_PIN;
-  I2C_SCL_PORT->DDR |= I2C_SCL_PIN;
-}
-
-
 static void initializePinsForDebugLeds(void)
 {
-  /* set GPIOs high state */
-  DBG_LED0_PORT->ODR |= DBG_LED0_PIN;
-  DBG_LED1_PORT->ODR |= DBG_LED1_PIN;
-
-  /* set GPIOs in output mode */
-  DBG_LED0_PORT->DDR |= DBG_LED0_PIN;
-  DBG_LED1_PORT->DDR |= DBG_LED1_PIN;
+  GPIO_Init(DBG_LED0_PORT, DBG_LED0_PIN, GPIO_MODE_OUT_OD_HIZ_SLOW);
+  GPIO_Init(DBG_LED1_PORT, DBG_LED1_PIN, GPIO_MODE_OUT_OD_HIZ_SLOW);
 }
 
 
 static void initializePinForLedsDriver(void)
 {
-  /* set GPIO high state */
-  LEDS_ENABLE_PORT->ODR |= LEDS_ENABLE_PIN;
-
-  /* set GPIO in output mode */
-  LEDS_ENABLE_PORT->DDR |= LEDS_ENABLE_PIN;
+  GPIO_Init(LEDS_ENABLE_PORT, LEDS_ENABLE_PIN, GPIO_MODE_OUT_OD_HIZ_SLOW);
 }

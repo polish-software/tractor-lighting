@@ -156,8 +156,8 @@ typedef enum {
   CLK_FLAG_SWBSY   = (uint16_t)0x0301, /*!< Switch busy Flag */
   CLK_FLAG_CSSD    = (uint16_t)0x0408, /*!< Clock security system detection Flag */
   CLK_FLAG_AUX     = (uint16_t)0x0402, /*!< Auxiliary oscillator connected to master clock */
-  CLK_FLAG_CCOBSY  = (uint16_t)0x0504, /*!< Configurable clock output busy */
-  CLK_FLAG_CCORDY  = (uint16_t)0x0502 /*!< Configurable clock output ready */
+  CLK_FLAG_CCOBSY  = (uint16_t)0x0540, /*!< Configurable clock output busy */
+  CLK_FLAG_CCORDY  = (uint16_t)0x0520 /*!< Configurable clock output ready */
 }CLK_Flag_TypeDef;
 
 /**

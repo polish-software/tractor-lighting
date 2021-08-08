@@ -8,13 +8,21 @@ LIBFILE = library.lib
 
 SOURCES = \
 config.c \
-stm8s_gpio.c
+stm8s_it.c \
+stm8s_clk.c \
+stm8s_gpio.c \
+stm8s_i2c.c \
+stm8s_tim4.c \
+debugLeds.c \
+delay.c \
+i2cCommunication.c \
+pca9685LedDriver.c
 
 RELS = $(addprefix $(OUTPUTSPATH)/,$(SOURCES:.c=.rel))
 
 SDCC = sdcc
 SDAR = sdar
-MACROS = -D__CSMC__ -DSTM8S003
+MACROS = -DSTM8S003
 PROCTYPE = -lstm8 -mstm8
 CFLAGSLIB = -c
 LIBOPTION = -rc

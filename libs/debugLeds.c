@@ -23,8 +23,7 @@ static const GPIO_Pin_TypeDef debugLedPins [NUMBER_OF_DEBUG_LEDS] =
 void enableDebugLed(const DebugLedType debugLedType)
 {
   if (debugLedType < NUMBER_OF_DEBUG_LEDS) {
-    /* set pin low state */
-    debugLedPorts[debugLedType]->ODR &= ~(debugLedPins[debugLedType]);
+    GPIO_WriteLow(debugLedPorts[debugLedType], debugLedPins[debugLedType]);
   }
 }
 
@@ -32,8 +31,7 @@ void enableDebugLed(const DebugLedType debugLedType)
 void disableDebugLed(const DebugLedType debugLedType)
 {
   if (debugLedType < NUMBER_OF_DEBUG_LEDS) {
-    /* set pin high state */
-    debugLedPorts[debugLedType]->ODR |= debugLedPins[debugLedType];
+    GPIO_WriteHigh(debugLedPorts[debugLedType], debugLedPins[debugLedType]);
   }
 }
 
@@ -41,7 +39,6 @@ void disableDebugLed(const DebugLedType debugLedType)
 void toggleDebugLed(const DebugLedType debugLedType)
 {
   if (debugLedType < NUMBER_OF_DEBUG_LEDS) {
-    /* toggle pin state */
-    debugLedPorts[debugLedType]->ODR ^= debugLedPins[debugLedType];
+    GPIO_WriteReverse(debugLedPorts[debugLedType], debugLedPins[debugLedType]);
   }
 }
