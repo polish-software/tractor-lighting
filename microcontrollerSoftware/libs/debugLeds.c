@@ -8,37 +8,31 @@
 **/
 
 #include "debugLeds.h"
+#include "definitions.h"
 #include "stm8s.h"
 #include "stm8s_gpio.h"
-#include "definitions.h"
 
+static GPIO_TypeDef* const debugLedPorts[NUMBER_OF_DEBUG_LEDS] = { DBG_LED0_PORT, DBG_LED1_PORT };
 
-static GPIO_TypeDef* const debugLedPorts [NUMBER_OF_DEBUG_LEDS] =
-  { DBG_LED0_PORT, DBG_LED1_PORT };
-
-static const GPIO_Pin_TypeDef debugLedPins [NUMBER_OF_DEBUG_LEDS] =
-  { DBG_LED0_PIN, DBG_LED1_PIN };
-
+static const GPIO_Pin_TypeDef debugLedPins[NUMBER_OF_DEBUG_LEDS] = { DBG_LED0_PIN, DBG_LED1_PIN };
 
 void enableDebugLed(const DebugLedType debugLedType)
 {
-  if (debugLedType < NUMBER_OF_DEBUG_LEDS) {
-    GPIO_WriteLow(debugLedPorts[debugLedType], debugLedPins[debugLedType]);
-  }
+    if (debugLedType < NUMBER_OF_DEBUG_LEDS) {
+        GPIO_WriteLow(debugLedPorts[debugLedType], debugLedPins[debugLedType]);
+    }
 }
-
 
 void disableDebugLed(const DebugLedType debugLedType)
 {
-  if (debugLedType < NUMBER_OF_DEBUG_LEDS) {
-    GPIO_WriteHigh(debugLedPorts[debugLedType], debugLedPins[debugLedType]);
-  }
+    if (debugLedType < NUMBER_OF_DEBUG_LEDS) {
+        GPIO_WriteHigh(debugLedPorts[debugLedType], debugLedPins[debugLedType]);
+    }
 }
-
 
 void toggleDebugLed(const DebugLedType debugLedType)
 {
-  if (debugLedType < NUMBER_OF_DEBUG_LEDS) {
-    GPIO_WriteReverse(debugLedPorts[debugLedType], debugLedPins[debugLedType]);
-  }
+    if (debugLedType < NUMBER_OF_DEBUG_LEDS) {
+        GPIO_WriteReverse(debugLedPorts[debugLedType], debugLedPins[debugLedType]);
+    }
 }

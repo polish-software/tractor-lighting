@@ -12,13 +12,11 @@
 
 #include <stdint.h>
 
-typedef enum
-{
-  DBG_LED0,
-  DBG_LED1,
-  NUMBER_OF_DEBUG_LEDS
-}DebugLedType;
-
+typedef enum {
+    DBG_LED0,
+    DBG_LED1,
+    NUMBER_OF_DEBUG_LEDS
+} DebugLedType;
 
 void enableDebugLed(const DebugLedType debugLedType);
 

@@ -8,29 +8,29 @@
 **/
 
 #include "config.h"
-#include "delay.h"
 #include "debugLeds.h"
-#include "stm8s_it.h"
+#include "delay.h"
 #include "pca9685LedDriver.h"
+#include "stm8s_it.h"
 
 int main(void)
 {
 
-  initializeClocks();
-  initializePins();
-  initializeDelays();
-  delayMs(5);
-  initializeLedDriverPca9685();
+    initializeClocks();
+    initializePins();
+    initializeDelays();
+    delayMs(5);
+    initializeLedDriverPca9685();
 
-  while(1) {
-    disableDebugLed(DBG_LED1);
-    enableDebugLed(DBG_LED0);
+    while (1) {
+        disableDebugLed(DBG_LED1);
+        enableDebugLed(DBG_LED0);
 
-    delayMs(1000);
+        delayMs(1000);
 
-    disableDebugLed(DBG_LED0);
-    enableDebugLed(DBG_LED1);
+        disableDebugLed(DBG_LED0);
+        enableDebugLed(DBG_LED1);
 
-    delayMs(1000);
-  }
+        delayMs(1000);
+    }
 }
