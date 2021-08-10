@@ -24,6 +24,15 @@ void initializeClocks(void)
     /* fMASTER = 4 MHz (for peripherals) */
     /* fCPU = fMASTER = 4 MHz (CPUDIV[2:0] = 0b000) */
     CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV4);
+
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_I2C, ENABLE);
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_SPI, DISABLE);
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_UART1, DISABLE);
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER4, ENABLE);
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER2, DISABLE);
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER1, DISABLE);
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_AWU, DISABLE);
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_ADC, DISABLE);
 }
 
 void initializePins(void)
