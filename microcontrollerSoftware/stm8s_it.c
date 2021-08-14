@@ -454,9 +454,10 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
   */
 INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 {
-    decrementTimingDelay();
     /* Cleat Interrupt Pending bit */
     TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
+
+    decrementTimingDelay();
 }
 #endif /*STM8S903*/
 

@@ -28,4 +28,17 @@
 #define LEDS_ENABLE_PIN (GPIO_PIN_7)
 #define LEDS_ENABLE_PORT (GPIOC)
 
+/*buttons pins*/
+#define BUTTON1_PIN (GPIO_PIN_3)
+#define BUTTON1_PORT (GPIOC)
+
+#define BUTTON2_PIN (GPIO_PIN_4)
+#define BUTTON2_PORT (GPIOC)
+
+#define BUTTON3_PIN (GPIO_PIN_5)
+#define BUTTON3_PORT (GPIOD)
+
+#define BUTTON4_PIN (GPIO_PIN_6)
+#define BUTTON4_PORT (GPIOD)
+
 #endif /* __DEFINITIONS_H__ */

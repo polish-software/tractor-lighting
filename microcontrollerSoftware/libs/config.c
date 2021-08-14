@@ -16,6 +16,7 @@
 static void initializePinsForI2C(void);
 static void initializePinsForDebugLeds(void);
 static void initializePinForLedsDriver(void);
+static void initializePinsForButtons(void);
 
 void initializeClocks(void)
 {
@@ -26,9 +27,10 @@ void initializeClocks(void)
     CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV4);
 
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_I2C, ENABLE);
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER4, ENABLE);
+
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_SPI, DISABLE);
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_UART1, DISABLE);
-    CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER4, ENABLE);
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER2, DISABLE);
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER1, DISABLE);
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_AWU, DISABLE);
@@ -39,6 +41,7 @@ void initializePins(void)
 {
     initializePinsForDebugLeds();
     initializePinForLedsDriver();
+    initializePinsForButtons();
 }
 
 static void initializePinsForDebugLeds(void)
@@ -50,4 +53,12 @@ static void initializePinsForDebugLeds(void)
 static void initializePinForLedsDriver(void)
 {
     GPIO_Init(LEDS_ENABLE_PORT, LEDS_ENABLE_PIN, GPIO_MODE_OUT_OD_HIZ_SLOW);
+}
+
+static void initializePinsForButtons(void)
+{
+    GPIO_Init(BUTTON1_PORT, BUTTON1_PIN, GPIO_MODE_IN_PU_NO_IT);
+    GPIO_Init(BUTTON2_PORT, BUTTON2_PIN, GPIO_MODE_IN_PU_NO_IT);
+    GPIO_Init(BUTTON3_PORT, BUTTON3_PIN, GPIO_MODE_IN_PU_NO_IT);
+    GPIO_Init(BUTTON4_PORT, BUTTON4_PIN, GPIO_MODE_IN_PU_NO_IT);
 }
