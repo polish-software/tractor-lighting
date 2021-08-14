@@ -42,7 +42,7 @@
 #define MODE1_RESTART 0x80 /**< Restart enabled */
 // MODE2 bits
 #define MODE2_OUTNE_0 0x01 /**< Active LOW output enable input */
-#define MODE2_OUTNE_1 0x02 /**< Active LOW output enable input - high impedience */
+#define MODE2_OUTNE_1 0x02 /**< Active LOW output enable input - high impedance */
 #define MODE2_OUTDRV 0x04 /**< totem pole structure vs open-drain */
 #define MODE2_OCH 0x08 /**< Outputs change on ACK vs STOP */
 #define MODE2_INVRT 0x10 /**< Output logic state inverted */
@@ -58,6 +58,8 @@ static const uint8_t ledDriverModuleAddress = 0xAA;
 
 static void resetDriver(void);
 static void setPwmFrequency(uint16_t frequency);
+static void setOutputMode(void);
+static void setPwmDutyCycle(LedDriverPca9685LedType ledType, uint16_t ledOnTime, uint16_t ledOffTime);
 
 void initializeLedDriverPca9685(void)
 {
@@ -66,6 +68,8 @@ void initializeLedDriverPca9685(void)
     resetDriver();
 
     setPwmFrequency(1000);
+
+    setOutputMode();
 }
 
 void enableLedDriverPca9685(void)
@@ -76,6 +80,17 @@ void enableLedDriverPca9685(void)
 void disableLedDriverPca9685(void)
 {
     GPIO_WriteHigh(LEDS_ENABLE_PORT, LEDS_ENABLE_PIN);
+}
+
+void setLedDriverPca9685PwmOutput(LedDriverPca9685LedType ledType, uint8_t pwmDutyInPercents)
+{
+    if (pwmDutyInPercents > 100) {
+        pwmDutyInPercents = 100;
+    }
+
+    const uint16_t ledOnTime = 0;
+    const uint16_t ledOffTime = (uint32_t)pwmDutyInPercents * 4095 / 100;
+    setPwmDutyCycle(ledType, ledOnTime, ledOffTime);
 }
 
 static void resetDriver(void)
@@ -108,4 +123,22 @@ static void setPwmFrequency(uint16_t frequency)
     writeI2CBytes(ledDriverModuleAddress, PCA9685_PRESCALE, &prescaler, 1);
     writeI2CBytes(ledDriverModuleAddress, PCA9685_MODE1, &oldMode, 1);
     delayMs(5);
+}
+
+static void setOutputMode(void)
+{
+    /* set outputs inverted open-drain
+       outputs change on STOP command
+       set high-impedance when OE = 1 */
+    const uint8_t mode = MODE2_INVRT | MODE2_OUTNE_0;
+    writeI2CBytes(ledDriverModuleAddress, PCA9685_MODE2, &mode, 1);
+}
+
+static void setPwmDutyCycle(LedDriverPca9685LedType ledType, uint16_t ledOnTime, uint16_t ledOffTime)
+{
+    const uint8_t bytesAddress = PCA9685_LED0_ON_L + ledType * 4;
+    const uint8_t bytesToWrite[4] = { (uint8_t)ledOnTime, (uint8_t)(ledOnTime >> 8), (uint8_t)ledOffTime, (uint8_t)(ledOffTime >> 8) };
+    const uint8_t numberOfBytesToWrite = 4;
+
+    writeI2CBytes(ledDriverModuleAddress, bytesAddress, bytesToWrite, numberOfBytesToWrite);
 }
