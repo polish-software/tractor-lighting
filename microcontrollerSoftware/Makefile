@@ -1,10 +1,11 @@
-OUTPUTSPATH = build
+PROJECT_NAME = tractor
+OUTPUTS_PATH = build
 MAIN_FILENAME = main
 
-MAINCFILE = $(MAIN_FILENAME).c
-MAINHEXFILE = $(MAIN_FILENAME).ihx
-HEXFILE = tractor.ihx
-LIBFILE = library.lib
+MAIN_C_FILE = $(MAIN_FILENAME).c
+MAIN_HEX_FILE = $(MAIN_FILENAME).ihx
+HEX_FILE = $(PROJECT_NAME).ihx
+LIB_FILE = library.lib
 
 SOURCES = \
 config.c \
@@ -16,18 +17,19 @@ stm8s_tim4.c \
 debugLeds.c \
 delay.c \
 i2cCommunication.c \
-pca9685LedDriver.c
+pca9685LedDriver.c \
+buttons.c
 
-RELS = $(addprefix $(OUTPUTSPATH)/,$(SOURCES:.c=.rel))
+RELS = $(addprefix $(OUTPUTS_PATH)/,$(SOURCES:.c=.rel))
 
 SDCC = sdcc
 SDAR = sdar
 MACROS = -DSTM8S003
 PROCTYPE = -lstm8 -mstm8
-CFLAGSLIB = -c
-LIBOPTION = -rc
+C_FLAGS_LIB = -c
+LIB_OPTION = -rc
 PROCESSOR = stm8s003f3
-DEBUGPROBE = stlinkv2
+DEBUG_PROBE = stlinkv2
 FLASH = stm8flash
 
 INCLUDES = \
@@ -37,24 +39,24 @@ INCLUDES = \
 vpath %.c libs/
 vpath %.c libs/StdPeriph_Driver/src/
 
-all: $(OUTPUTSPATH) $(HEXFILE)
+all: $(OUTPUTS_PATH) $(OUTPUTS_PATH)/$(HEX_FILE)
 
-$(HEXFILE): $(OUTPUTSPATH)/$(LIBFILE)
-	$(SDCC) $(MACROS) $(PROCTYPE) $(INCLUDES) $(MAINCFILE) $(LIBFILE) -L $(OUTPUTSPATH) -o $(OUTPUTSPATH)/
-	-mv $(OUTPUTSPATH)/$(MAINHEXFILE) $(HEXFILE)
+$(OUTPUTS_PATH)/$(HEX_FILE): $(OUTPUTS_PATH)/$(LIB_FILE)
+	$(SDCC) $(MACROS) $(PROCTYPE) $(INCLUDES) $(MAIN_C_FILE) $(LIB_FILE) -L $(OUTPUTS_PATH) -o $(OUTPUTS_PATH)/
+	-mv $(OUTPUTS_PATH)/$(MAIN_HEX_FILE) $(OUTPUTS_PATH)/$(HEX_FILE)
 
-$(OUTPUTSPATH)/$(LIBFILE): $(RELS)
-	$(SDAR) $(LIBOPTION) $(OUTPUTSPATH)/$(LIBFILE) $(RELS)
+$(OUTPUTS_PATH)/$(LIB_FILE): $(RELS)
+	$(SDAR) $(LIB_OPTION) $(OUTPUTS_PATH)/$(LIB_FILE) $(RELS)
 
-$(OUTPUTSPATH)/%.rel: %.c
-	$(SDCC) $(MACROS) $(PROCTYPE) $(INCLUDES) $(CFLAGSLIB) $< -o $(OUTPUTSPATH)/
+$(OUTPUTS_PATH)/%.rel: %.c
+	$(SDCC) $(MACROS) $(PROCTYPE) $(INCLUDES) $(C_FLAGS_LIB) $< -o $(OUTPUTS_PATH)/
 
-$(OUTPUTSPATH):
+$(OUTPUTS_PATH):
 	mkdir $@
 
 .PHONY: clean flash
 clean:
-	-rm -fR $(OUTPUTSPATH) $(HEXFILE)
+	-rm -fR $(OUTPUTS_PATH)
 
 flash:
-	$(FLASH) -c$(DEBUGPROBE) -p$(PROCESSOR) -w $(HEXFILE)
+	$(FLASH) -c$(DEBUG_PROBE) -p$(PROCESSOR) -w $(OUTPUTS_PATH)/$(HEX_FILE)
