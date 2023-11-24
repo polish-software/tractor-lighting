@@ -7,6 +7,7 @@
   ******************************************************************************
 **/
 
+#include "buttons.h"
 #include "config.h"
 #include "debugLeds.h"
 #include "delay.h"
@@ -31,14 +32,12 @@ int main(void)
     setLedDriverPca9685PwmOutput(LED_DRIVER_PCA9685_LED4, 100);
 
     while (1) {
-        disableDebugLed(DBG_LED1);
-        enableDebugLed(DBG_LED0);
-
-        delayMs(1000);
-
-        disableDebugLed(DBG_LED0);
-        enableDebugLed(DBG_LED1);
-
-        delayMs(1000);
+        if (GetButtonState(BUTTON_LEFT_UPPER)) {
+            disableDebugLed(DBG_LED1);
+            enableDebugLed(DBG_LED0);
+        } else {
+            disableDebugLed(DBG_LED0);
+            enableDebugLed(DBG_LED1);
+        }
     }
 }
