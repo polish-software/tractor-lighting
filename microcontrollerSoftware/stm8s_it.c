@@ -27,6 +27,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8s_it.h"
+#include "buttons.h"
 #include "delay.h"
 #include "stm8s_tim4.h"
 
@@ -454,9 +455,12 @@ INTERRUPT_HANDLER(TIM6_UPD_OVF_TRG_IRQHandler, 23)
   */
 INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
 {
-    decrementTimingDelay();
     /* Cleat Interrupt Pending bit */
     TIM4_ClearITPendingBit(TIM4_IT_UPDATE);
+
+    decrementTimingDelay();
+
+    processButtonsInterrupt();
 }
 #endif /*STM8S903*/
 
