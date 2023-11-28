@@ -41,4 +41,12 @@
 #define BUTTON4_PIN (GPIO_PIN_6)
 #define BUTTON4_PORT (GPIOD)
 
+/*battery measure pin*/
+#define BAT_MEASURE_PIN (GPIO_PIN_2)
+#define BAT_MEASURE_PORT (GPIOD)
+
+/*potentiometer pin*/
+#define POTENTIOMETER_PIN (GPIO_PIN_3)
+#define POTENTIOMETER_PORT (GPIOD)
+
 #endif /* __DEFINITIONS_H__ */
